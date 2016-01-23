@@ -18,6 +18,7 @@
 }
 .cell {
 	border: 1px solid #fff;
+	color: #fff;
 	display: inline-block;
 	width: calc(20% - 2px);
 	max-width: ;
@@ -33,4 +34,5 @@
 
 .cell.won {
 	background: #2ecc71;
+	color: #2c3e50;
 }
