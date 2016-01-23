@@ -10,7 +10,13 @@
 	<h1>Umphrey's Bingo</h1>
 	<button type="text" ng-click="toggleEdit()">Toggle edit mode</button>
 	<div id="container">
-
+		<div class="row bingo">
+			<div class="cell">B</div>
+			<div class="cell">B</div>
+			<div class="cell">B</div>
+			<div class="cell">B</div>
+			<div class="cell">B</div>
+		</div>
 		<div class="row" ng-repeat="row in rows">
 			<div class="cell" ng-repeat="cell in row.cells" ng-class="{'won': cell.won}" ng-click="toggleCell(cell)">
 				<input ng-if="editMode" type="text" ng-model="cell.value"></input>

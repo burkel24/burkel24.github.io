@@ -1,5 +1,5 @@
 #container {
-	background: #efefef;
+	background: #34495e;
 }
 
 .row {
@@ -8,6 +8,14 @@
 	justify-content: center;
 }
 
+.row.bingo {
+	border: 0px solid rgba(0,0,0,.0);
+}
+
+.row.bingo .cell {
+	border: none;
+	background: #fff;
+}
 .cell {
 	border: 1px solid #fff;
 	display: inline-block;
@@ -18,6 +26,11 @@
 	vertical-align: middle;
 }
 
+.cell input {
+	width: calc(100% - 5px);
+	margin: auto auto;
+}
+
 .cell.won {
-	background: red;
+	background: #2ecc71;
 }
