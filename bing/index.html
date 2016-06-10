@@ -1,0 +1,23 @@
+<!doctype html>
+<html>
+	<head>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.0/angular.min.js"></script>
+		
+		<script src="main.js"></script>
+		<link rel="stylesheet" href="main.css">
+	</head>
+<body ng-app="bingo" ng-controller="bingo-controller">
+	<h1>Umphrey's Bingo</h1>
+	<button type="text" ng-click="toggleEdit()">Toggle edit mode</button>
+	<div id="container">
+
+		<div class="row" ng-repeat="row in rows">
+			<div class="cell" ng-repeat="cell in row.cells" ng-class="{'won': cell.won}" ng-click="toggleCell(cell)">
+				<input ng-if="editMode" type="text" ng-model="cell.value"></input>
+				<span ng-if="!editMode">{{ cell.value }}</span>
+			</div>
+		</div>
+	</div>
+	
+</body>
+</html>

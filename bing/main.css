@@ -1,0 +1,38 @@
+#container {
+	background: #34495e;
+}
+
+.row {
+	height: 100px;
+	border: 1px solid #000;
+	justify-content: center;
+}
+
+.row.bingo {
+	border: 0px solid rgba(0,0,0,.0);
+}
+
+.row.bingo .cell {
+	border: none;
+	background: #fff;
+}
+.cell {
+	border: 1px solid #fff;
+	color: #fff;
+	display: inline-block;
+	width: calc(20% - 2px);
+	max-width: ;
+	height: 100px;
+	text-align: center;
+	vertical-align: middle;
+}
+
+.cell input {
+	width: calc(100% - 5px);
+	margin: auto auto;
+}
+
+.cell.won {
+	background: #2ecc71;
+	color: #2c3e50;
+}
