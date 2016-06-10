@@ -1,23 +1,223 @@
 <!doctype html>
 <html>
-	<head>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.0/angular.min.js"></script>
-		
-		<script src="main.js"></script>
-		<link rel="stylesheet" href="main.css">
-	</head>
-<body ng-app="bingo" ng-controller="bingo-controller">
-	<h1>Umphrey's Bingo</h1>
-	<button type="text" ng-click="toggleEdit()">Toggle edit mode</button>
-	<div id="container">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+    <title>Map Label Utility Library Example</title>
+    <style>
+      body {
+        font-family: sans-serif;
+      }
+    </style>
+    <script src="https://maps.googleapis.com/maps/api/js"></script>
+    <script src="maplabel.js"></script>
 
-		<div class="row" ng-repeat="row in rows">
-			<div class="cell" ng-repeat="cell in row.cells" ng-class="{'won': cell.won}" ng-click="toggleCell(cell)">
-				<input ng-if="editMode" type="text" ng-model="cell.value"></input>
-				<span ng-if="!editMode">{{ cell.value }}</span>
-			</div>
-		</div>
-	</div>
-	
-</body>
+    <script>
+      function init() {
+        const TEXT_SIZE = '12';
+        const ZOOM = 13;
+
+        var points = Object.keys(DATA).map(key => DATA[key]);
+
+        let center = getCenterCoordinate(points)
+        // var myLatlng = new google.maps.LatLng(34.04, -118.24);
+        console.log(center);
+        var myLatlng = new google.maps.LatLng(center.lat, center.lng);
+        var myOptions = {
+          zoom: ZOOM,
+          center: myLatlng,
+          mapTypeId: google.maps.MapTypeId.ROADMAP
+        };
+        var map = new google.maps.Map(document.getElementById('map'), myOptions);
+        points.forEach(aPoint => {
+          let mapLabel = new MapLabel({
+            text: aPoint.fa.match(/.*?,/)[0],
+            position: new google.maps.LatLng(aPoint.lat, aPoint.lng),
+            map: map,
+            fontSize: TEXT_SIZE,
+            align: 'center'
+          });
+          // mapLabel.set('position', new google.maps.LatLng(aPoint.lat, aPoint.lng));
+
+          var marker = new google.maps.Marker();
+          marker.bindTo('map', mapLabel);
+          marker.bindTo('position', mapLabel);
+          marker.setDraggable(true);
+        });
+      }
+
+      function getCenterCoordinate(coords) {
+        let lat = lng = 0;
+
+        coords.forEach(aCoord => {
+          console.log(aCoord);
+          lng+= aCoord.lng;
+          lat+= aCoord.lat;
+        });
+
+        return { lng: lng / coords.length, lat: lat / coords.length };
+      }
+    </script>
+  </head>
+  <body>
+    <div id="map" style="width: 800px; height: 800px; margin: 0 auto;"></div>
+
+
+    <script>
+      const DATA = JSON.parse(`{
+   "27 Montrose Ave, Brooklyn, NY 11206":{
+      "lat":40.7070106,
+      "lng":-73.94918419999999,
+      "fa":"27 Montrose Ave, Brooklyn, NY 11206, USA",
+      "ufa":"27 Montrose Ave, Brooklyn, NY 11206"
+   },
+   "857 President Street, Brooklyn, NY":{
+      "lat":40.673532,
+      "lng":-73.974497,
+      "fa":"857 President St, Brooklyn, NY 11215, USA",
+      "ufa":"857 President Street, Brooklyn, NY"
+   },
+   "233 Schermerhorn, Brooklyn, NY 11201":{
+      "lat":40.6886584,
+      "lng":-73.98456639999999,
+      "fa":"233 Schermerhorn St, Brooklyn, NY 11201, USA",
+      "ufa":"233 Schermerhorn, Brooklyn, NY 11201"
+   },
+   "373 Manhattan Ave, Brooklyn, NY 11211":{
+      "lat":40.717047,
+      "lng":-73.946769,
+      "fa":"373 Manhattan Ave, Brooklyn, NY 11211, USA",
+      "ufa":"373 Manhattan Ave, Brooklyn, NY 11211"
+   },
+   "259 Hart Street, Brooklyn, NY 11206":{
+      "lat":40.694322,
+      "lng":-73.940775,
+      "fa":"259 Hart St, Brooklyn, NY 11206, USA",
+      "ufa":"259 Hart Street, Brooklyn, NY 11206"
+   },
+   "656 Eastern Parkway GARDEN, Brooklyn, NY 11213":{
+      "lat":40.669202,
+      "lng":-73.9467899,
+      "fa":"656 Eastern Pkwy, Brooklyn, NY 11213, USA",
+      "ufa":"656 Eastern Parkway GARDEN, Brooklyn, NY 11213"
+   },
+   "509 Park Place, Brooklyn, NY 11238 ":{
+      "lat":40.675308,
+      "lng":-73.96082899999999,
+      "fa":"509 Park Pl, Brooklyn, NY 11238, USA",
+      "ufa":"509 Park Place, Brooklyn, NY 11238 "
+   },
+   "279 Prospect Avenue, Brooklyn, NY 11215":{
+      "lat":40.6635148,
+      "lng":-73.98903949999999,
+      "fa":"279 Prospect Ave, Brooklyn, NY 11215, USA",
+      "ufa":"279 Prospect Avenue, Brooklyn, NY 11215"
+   },
+   "378 Baltic Street, Brooklyn, NY":{
+      "lat":40.6839911,
+      "lng":-73.9901773,
+      "fa":"378 Baltic St, Brooklyn, NY 11201, USA",
+      "ufa":"378 Baltic Street, Brooklyn, NY"
+   },
+   "724 Sackett Street, Brooklyn, NY 11217":{
+      "lat":40.677098,
+      "lng":-73.980846,
+      "fa":"724 Sackett St, Brooklyn, NY 11217, USA",
+      "ufa":"724 Sackett Street, Brooklyn, NY 11217"
+   },
+   "378 Myrtle Avenue, Brooklyn, NY":{
+      "lat":40.6930158,
+      "lng":-73.97108109999999,
+      "fa":"378 Myrtle Ave, Brooklyn, NY 11205, USA",
+      "ufa":"378 Myrtle Avenue, Brooklyn, NY"
+   },
+   "123 Lafayette Avenue, Brooklyn, NY":{
+      "lat":40.6875185,
+      "lng":-73.97303099999999,
+      "fa":"123 Lafayette Ave, Brooklyn, NY 11217, USA",
+      "ufa":"123 Lafayette Avenue, Brooklyn, NY"
+   },
+   "119 carlton av, Brooklyn, NY 11205":{
+      "lat":40.6941601,
+      "lng":-73.9729423,
+      "fa":"119 Carlton Ave, Brooklyn, NY 11205, USA",
+      "ufa":"119 carlton av, Brooklyn, NY 11205"
+   },
+   "364 7th St, Brooklyn, NY 11215":{
+      "lat":40.669564,
+      "lng":-73.984132,
+      "fa":"364 7th St, Brooklyn, NY 11215, USA",
+      "ufa":"364 7th St, Brooklyn, NY 11215"
+   },
+   "81 North 7th Street, Brooklyn, NY":{
+      "lat":40.719823,
+      "lng":-73.960407,
+      "fa":"81 N 7th St, Brooklyn, NY 11249, USA",
+      "ufa":"81 North 7th Street, Brooklyn, NY"
+   },
+   "593 St Marks ave, Brooklyn, NY 11216":{
+      "lat":40.675817,
+      "lng":-73.9539999,
+      "fa":"593 St Marks Ave, Brooklyn, NY 11216, USA",
+      "ufa":"593 St Marks ave, Brooklyn, NY 11216"
+   },
+   "139 7th Avenue, Brooklyn, NY 11215":{
+      "lat":40.6727816,
+      "lng":-73.97642429999999,
+      "fa":"139 7th Ave, Brooklyn, NY 11215, USA",
+      "ufa":"139 7th Avenue, Brooklyn, NY 11215"
+   },
+   "695 Halsey Street, Brooklyn, NY":{
+      "lat":40.684917,
+      "lng":-73.924641,
+      "fa":"695 Halsey St, Brooklyn, NY 11233, USA",
+      "ufa":"695 Halsey Street, Brooklyn, NY"
+   },
+   " 272 Kosciuszko St, Brooklyn, New York 11221":{
+      "lat":40.691244,
+      "lng":-73.94378999999999,
+      "fa":"272 Kosciuszko St, Brooklyn, NY 11221, USA",
+      "ufa":" 272 Kosciuszko St, Brooklyn, New York 11221"
+   },
+   "346 Flatbush Avenue, Brooklyn, NY 11238":{
+      "lat":40.6760446,
+      "lng":-73.971879,
+      "fa":"346 Flatbush Ave, Brooklyn, NY 11238, USA",
+      "ufa":"346 Flatbush Avenue, Brooklyn, NY 11238"
+   },
+   "591 Marcy Avenue, Brooklyn, NY":{
+      "lat":40.694868,
+      "lng":-73.948841,
+      "fa":"591 Marcy Ave, Brooklyn, NY 11206, USA",
+      "ufa":"591 Marcy Avenue, Brooklyn, NY"
+   },
+   "270 10th Street, Brooklyn, NY 11215":{
+      "lat":40.669901,
+      "lng":-73.99004599999999,
+      "fa":"270 10th St, Brooklyn, NY 11215, USA",
+      "ufa":"270 10th Street, Brooklyn, NY 11215"
+   },
+   "129 Chauncey Street, Brooklyn, NY":{
+      "lat":40.680513,
+      "lng":-73.930324,
+      "fa":"129 Chauncey St, Brooklyn, NY 11233, USA",
+      "ufa":"129 Chauncey Street, Brooklyn, NY"
+   },
+   "155 Pulaski St, Brooklyn, NY 11206":{
+      "lat":40.6930486,
+      "lng":-73.9449843,
+      "fa":"155 Pulaski St, Brooklyn, NY 11206, USA",
+      "ufa":"155 Pulaski St, Brooklyn, NY 11206"
+   },
+   "499 Grand Street, Brooklyn, NY":{
+      "lat":40.7111303,
+      "lng":-73.9513697,
+      "fa":"499 Grand St, Brooklyn, NY 11211, USA",
+      "ufa":"499 Grand Street, Brooklyn, NY"
+   }
+}`);
+
+      init();
+    </script>
+  </body>
 </html>
